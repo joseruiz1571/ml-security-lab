@@ -1,0 +1,111 @@
+rules:
+  - id: unsafe-keras-model-load
+    patterns:
+      - pattern-either:
+          - pattern: tf.keras.models.load_model(...)
+          - pattern: keras.models.load_model(...)
+          - pattern: tensorflow.keras.models.load_model(...)
+    message: >-
+      Loading Keras/TensorFlow model without validation. Models can contain
+      arbitrary Python code in Lambda layers or custom objects that execute
+      during loading. Verify model source and consider using compile=False
+      or safe_mode=True (TF 2.13+) for untrusted models.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+      technology:
+        - tensorflow
+        - keras
+      references:
+        - https://www.tensorflow.org/guide/keras/serialization_and_saving
+
+  - id: unsafe-saved-model-load
+    patterns:
+      - pattern-either:
+          - pattern: tf.saved_model.load(...)
+          - pattern: tensorflow.saved_model.load(...)
+    message: >-
+      Loading TensorFlow SavedModel without signature verification.
+      SavedModel format can contain arbitrary operations. Verify the model
+      source is trusted before loading. Consider validating model signatures.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+      technology:
+        - tensorflow
+
+  - id: keras-model-from-url
+    patterns:
+      - pattern: |
+          $RESPONSE = requests.get(...)
+          ...
+          tf.keras.models.load_model(...)
+      - pattern: |
+          $RESPONSE = requests.get(...)
+          ...
+          keras.models.load_model(...)
+    message: >-
+      CRITICAL: Loading Keras model directly from URL without validation.
+      Remote attacker could serve malicious model with code execution payload.
+      Always verify model integrity (checksum/signature) before loading.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+
+  - id: tf-hub-load-untrusted
+    patterns:
+      - pattern: hub.load(...)
+      - pattern: tensorflow_hub.load(...)
+    message: >-
+      Loading model from TensorFlow Hub. Ensure you're loading from the official
+      tfhub.dev domain and verify the publisher. Custom or third-party models
+      may contain malicious code.
+    languages: [python]
+    severity: INFO
+    metadata:
+      category: security
+      technology:
+        - tensorflow
+
+  - id: keras-lambda-layer
+    patterns:
+      - pattern-either:
+          - pattern: Lambda(...)
+          - pattern: keras.layers.Lambda(...)
+          - pattern: tf.keras.layers.Lambda(...)
+    message: >-
+      Keras Lambda layer detected. Lambda layers can contain arbitrary Python
+      code that executes during model inference. If loading models from
+      untrusted sources, Lambda layers pose code execution risks.
+    languages: [python]
+    severity: INFO
+    metadata:
+      cwe: "CWE-94: Improper Control of Generation of Code"
+      category: security
+      technology:
+        - keras
+        - tensorflow
+
+  - id: huggingface-from-pretrained-untrusted
+    patterns:
+      - pattern-either:
+          - pattern: $MODEL.from_pretrained($PATH, ...)
+          - pattern: AutoModel.from_pretrained(...)
+          - pattern: AutoTokenizer.from_pretrained(...)
+    message: >-
+      Loading HuggingFace model with from_pretrained(). Models from the Hub
+      can contain arbitrary code. Use trust_remote_code=False (default) and
+      verify the model source. Consider using safetensors format.
+    languages: [python]
+    severity: INFO
+    metadata:
+      category: security
+      technology:
+        - huggingface
+        - transformers

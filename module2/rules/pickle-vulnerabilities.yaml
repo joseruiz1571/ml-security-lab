@@ -1,0 +1,106 @@
+rules:
+  - id: unsafe-pickle-load
+    patterns:
+      - pattern-either:
+          - pattern: pickle.load(...)
+          - pattern: pickle.loads(...)
+    message: >-
+      Unsafe pickle deserialization detected. pickle.load() can execute arbitrary
+      code when deserializing untrusted data. An attacker can craft malicious
+      pickle files that execute system commands upon loading.
+      Use safer alternatives like JSON, or implement signature verification.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      owasp: "A8:2017 Insecure Deserialization"
+      mitre-atlas: "AML.T0010 ML Supply Chain Compromise"
+      references:
+        - https://docs.python.org/3/library/pickle.html#restricting-globals
+      category: security
+      technology:
+        - python
+        - machine-learning
+
+  - id: unsafe-pickle-dump
+    patterns:
+      - pattern-either:
+          - pattern: pickle.dump(...)
+          - pattern: pickle.dumps(...)
+    message: >-
+      Using pickle for serialization creates future deserialization attack vectors.
+      Models saved with pickle can be replaced with malicious versions.
+      Consider using joblib with compression, safetensors, or ONNX format.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+
+  - id: pickle-with-user-controlled-path
+    patterns:
+      - pattern-either:
+          - pattern: |
+              with open($PATH, 'rb') as $F:
+                  pickle.load($F)
+          - pattern: |
+              $FILE = open($PATH, 'rb')
+              pickle.load($FILE)
+    message: >-
+      Pickle deserialization with potentially user-controlled file path.
+      This combines path traversal with arbitrary code execution risks.
+      Validate and sanitize file paths before loading.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+
+  - id: pickle-from-network
+    patterns:
+      - pattern-either:
+          - pattern: pickle.loads($RESPONSE.content)
+          - pattern: pickle.loads($RESPONSE.text.encode())
+          - pattern: |
+              $DATA = requests.get(...)
+              ...
+              pickle.loads($DATA.content)
+    message: >-
+      CRITICAL: Deserializing pickle data from network response.
+      Remote attacker can send malicious serialized objects.
+      Never deserialize untrusted data from network sources.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+
+  - id: joblib-load-untrusted
+    patterns:
+      - pattern: joblib.load(...)
+    message: >-
+      joblib.load() uses pickle internally and has the same deserialization risks.
+      Verify the source of joblib files before loading.
+      Consider using safetensors for neural network weights.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+
+  - id: torch-load-untrusted
+    patterns:
+      - pattern-either:
+          - pattern: torch.load(...)
+          - pattern: torch.jit.load(...)
+    message: >-
+      PyTorch torch.load() uses pickle by default and can execute arbitrary code.
+      Use weights_only=True parameter (PyTorch 1.13+) or torch.load(..., pickle_module=safepickle).
+      For production, consider using safetensors format.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      category: security
+      technology:
+        - pytorch

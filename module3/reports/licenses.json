@@ -1,0 +1,146 @@
+{
+  "generated_at": "2026-01-17T10:00:00Z",
+  "tool": "pip-licenses",
+  "project": "HealthTech Innovations - Patient Risk Assessment",
+  "license_summary": {
+    "BSD-3-Clause": 18,
+    "MIT": 10,
+    "Apache-2.0": 7,
+    "LGPL-3.0": 1,
+    "HPND": 1,
+    "MPL-2.0": 1
+  },
+  "compliance_status": "REVIEW_REQUIRED",
+  "notes": "LGPL-3.0 dependency (psycopg2-binary) requires review for linking compliance",
+  "packages": [
+    {
+      "name": "scikit-learn",
+      "version": "1.3.2",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "numpy",
+      "version": "1.26.2",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "pandas",
+      "version": "2.1.3",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "flask",
+      "version": "3.0.0",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "werkzeug",
+      "version": "3.0.1",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "jinja2",
+      "version": "3.1.2",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "sqlalchemy",
+      "version": "2.0.23",
+      "license": "MIT",
+      "license_url": "https://opensource.org/licenses/MIT",
+      "compatible": true
+    },
+    {
+      "name": "psycopg2-binary",
+      "version": "2.9.9",
+      "license": "LGPL-3.0",
+      "license_url": "https://opensource.org/licenses/LGPL-3.0",
+      "compatible": false,
+      "notes": "LGPL requires review - consider asyncpg (Apache-2.0) as alternative"
+    },
+    {
+      "name": "boto3",
+      "version": "1.33.0",
+      "license": "Apache-2.0",
+      "license_url": "https://opensource.org/licenses/Apache-2.0",
+      "compatible": true
+    },
+    {
+      "name": "requests",
+      "version": "2.31.0",
+      "license": "Apache-2.0",
+      "license_url": "https://opensource.org/licenses/Apache-2.0",
+      "compatible": true
+    },
+    {
+      "name": "urllib3",
+      "version": "2.1.0",
+      "license": "MIT",
+      "license_url": "https://opensource.org/licenses/MIT",
+      "compatible": true
+    },
+    {
+      "name": "cryptography",
+      "version": "41.0.7",
+      "license": "Apache-2.0",
+      "license_url": "https://opensource.org/licenses/Apache-2.0",
+      "compatible": true
+    },
+    {
+      "name": "pyjwt",
+      "version": "2.8.0",
+      "license": "MIT",
+      "license_url": "https://opensource.org/licenses/MIT",
+      "compatible": true
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.1",
+      "license": "MIT",
+      "license_url": "https://opensource.org/licenses/MIT",
+      "compatible": true
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.0.0",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "pillow",
+      "version": "10.1.0",
+      "license": "HPND",
+      "license_url": "https://opensource.org/licenses/HPND",
+      "compatible": true,
+      "notes": "Historical Permission Notice and Disclaimer - permissive license"
+    },
+    {
+      "name": "joblib",
+      "version": "1.3.2",
+      "license": "BSD-3-Clause",
+      "license_url": "https://opensource.org/licenses/BSD-3-Clause",
+      "compatible": true
+    },
+    {
+      "name": "certifi",
+      "version": "2023.11.17",
+      "license": "MPL-2.0",
+      "license_url": "https://opensource.org/licenses/MPL-2.0",
+      "compatible": true,
+      "notes": "Mozilla Public License - file-level copyleft, generally compatible"
+    }
+  ]
+}
