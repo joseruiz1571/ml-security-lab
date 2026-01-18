@@ -10,6 +10,26 @@
 
 This repository contains hands-on security lab exercises for the Coursera course "Secure AI Code & Libraries with Static Analysis." The labs demonstrate common security vulnerabilities in machine learning applications and their remediation.
 
+---
+
+## Why This Matters for GRC
+
+These findings represent vulnerabilities that exist in production ML systems today. As AI adoption accelerates, GRC professionals increasingly need to understand these technical risks to be effective in their roles.
+
+**Understanding ML security helps GRC professionals:**
+
+| Capability | Example |
+|------------|---------|
+| **Ask better questions during vendor assessments** | "How do you serialize your ML models? Do you use pickle or a safer alternative like safetensors?" |
+| **Review AI/ML security controls with context** | Recognize that "model loading" is a potential code execution vector, not just a file read |
+| **Translate between security teams and business stakeholders** | Explain why a pickle deserialization finding is critical (arbitrary code execution) vs. a weak hash finding (data integrity risk) |
+| **Write more specific policies** | Move from "secure credentials properly" to "all credentials must be loaded from environment variables or secrets managers" |
+| **Evaluate compliance evidence** | Know what a meaningful before/after security remediation looks like |
+
+**The gap this fills:** Most GRC training covers frameworks and controls abstractly. This lab provides the concrete technical foundation that makes those abstractions actionable.
+
+---
+
 ## Course Modules
 
 | Module | Topic | Scenario |
